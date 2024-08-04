@@ -6,7 +6,7 @@ import { collection, deleteDoc, doc, getDocs, getDoc, setDoc } from 'firebase/fi
 import Sidebar from "./components/Sidebar";
 import InventoryList from './components/InventoryList';
 import CameraCapture from './components/CameraCapture';
-import LoadingBar from './components/LoadingBar'; // Import LoadingBar
+import LoadingBar from './components/LoadingBar';
 
 export default function Home() {
   const [inventory, setInventory] = useState([]);
@@ -17,7 +17,7 @@ export default function Home() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isWideScreen, setIsWideScreen] = useState(true);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // Loading state
+  const [isLoading, setIsLoading] = useState(false);
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
@@ -102,7 +102,7 @@ export default function Home() {
   const handleCloseCamera = () => setIsCameraOpen(false);
 
   const handleCapture = async (url) => {
-    setIsLoading(true); // Start loading
+    setIsLoading(true);
     try {
       const response = await fetch('/api/analyzeImage', {
         method: 'POST',
@@ -118,14 +118,14 @@ export default function Home() {
     } catch (error) {
       console.error('Error analyzing image:', error);
     }
-    setIsLoading(false); // Stop loading
+    setIsLoading(false);
     setIsCameraOpen(false);
-    updateInventory(); // Refresh the inventory after adding the item
+    updateInventory();
   };
 
   return (
     <div className="overflow-x-hidden text-neutral-300 antialiased">
-      {isLoading && <LoadingBar duration={3000} />} {/* Show loading bar if loading */}
+      {isLoading && <LoadingBar duration={3000} />}
       {!isLoading && (
         <>
           <div className="fixed top-0 left-0 w-full z-20 shadow-md">
@@ -189,7 +189,7 @@ export default function Home() {
             <div className="absolute top-0 z-[-2] h-screen w-screen bg-white bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]"></div>
           </div>
           <div className="flex flex-col items-center h-screen pt-20">
-            <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} handleOpen={handleOpen} />
+            <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} handleOpen={handleOpen} handleOpenCamera={handleOpenCamera} />
             <div className={`flex-1 p-6 transition-all duration-300 ${isSidebarOpen && isWideScreen ? 'ml-64' : 'ml-0'}`}>
               <Box width="100vw"
                 display="flex"
@@ -224,9 +224,9 @@ export default function Home() {
                       />
                       <Button variant="outlined"
                         onClick={() => {
-                          addItem(itemName)
-                          setItemName('')
-                          handleClose()
+                          addItem(itemName);
+                          setItemName('');
+                          handleClose();
                         }}
                       >Add</Button>
                     </Stack>

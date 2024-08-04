@@ -1,10 +1,12 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Camera } from 'react-camera-pro';
 import { storage } from '@/firebase';
 import { ref, uploadString, getDownloadURL } from 'firebase/storage';
+import { CameraIcon, ArrowPathIcon } from '@heroicons/react/24/solid'; // Import icons
 
 const CameraCapture = ({ onCapture, onClose }) => {
   const camera = useRef(null);
+  const [isBackCamera, setIsBackCamera] = useState(true);
 
   const takePicture = async () => {
     try {
@@ -32,15 +34,33 @@ const CameraCapture = ({ onCapture, onClose }) => {
     }
   };
 
+  const flipCamera = () => {
+    setIsBackCamera(!isBackCamera);
+  };
+
   return (
     <div className="w-full h-full flex flex-col items-center justify-center">
-      <Camera ref={camera} aspectRatio={16 / 9} className="w-full h-full" />
-      <button
-        className="absolute bottom-10 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-        onClick={takePicture}
-      >
-        Capture
-      </button>
+      <Camera
+        ref={camera}
+        aspectRatio={window.innerWidth >= 825 ? 16 / 9 : 9 / 16}
+        numberOfCamerasCallback={(num) => console.log(`Number of cameras detected: ${num}`)}
+        facingMode={isBackCamera ? 'environment' : 'user'}
+        className="w-full h-full"
+      />
+      <div className="absolute bottom-10 flex space-x-4">
+        <button
+          className="bg-blue-500 text-white p-3 rounded-full hover:bg-blue-600 flex items-center justify-center"
+          onClick={takePicture}
+        >
+          <CameraIcon className="w-6 h-6" />
+        </button>
+        <button
+          className="bg-gray-500 text-white p-3 rounded-full hover:bg-gray-600 flex items-center justify-center"
+          onClick={flipCamera}
+        >
+          <ArrowPathIcon className="w-6 h-6" />
+        </button>
+      </div>
     </div>
   );
 };
