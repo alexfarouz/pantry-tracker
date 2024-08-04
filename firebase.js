@@ -1,11 +1,7 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore"
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
   authDomain: "pantry-tracker-3b98a.firebaseapp.com",
@@ -16,9 +12,8 @@ const firebaseConfig = {
   measurementId: "G-23Y57MCXSK"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const firestore = getFirestore(app);
+const storage = getStorage(app);
 
-export {firestore}
-//"AIzaSyCR4wjATYdzZJn9QAUvO3wvku3qz3NItUo"
+export { firestore, storage };
