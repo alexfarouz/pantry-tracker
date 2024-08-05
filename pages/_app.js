@@ -7,6 +7,7 @@ const inter = Inter({ subsets: ["latin"] });
 function MyApp({ Component, pageProps }) {
   return (
     <ClerkProvider>
+      <title>Pantry Tracker</title>
       <div>
         <Component {...pageProps} />
       </div>
