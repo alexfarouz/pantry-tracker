@@ -44,8 +44,8 @@ const InventoryItem = ({ name, quantity, addItem, removeItem, deleteItem }) => {
         </IconButton>
       </Box>
       <button
-        className="bg-gradient-to-r from-blue-200 via-blue-400 to-blue-200 
-            text-white py-2 px-4 rounded mt-4 hover:from-blue-400 hover:via-blue-600 hover:to-blue-400"
+        className="bg-gradient-to-r from-red-500 via-red-600 to-red-500 
+            text-white py-2 px-4 rounded mt-4 hover:from-red-600 hover:via-red-700 hover:to-red-600"
         onClick={() => deleteItem(name)}
       >
         Remove

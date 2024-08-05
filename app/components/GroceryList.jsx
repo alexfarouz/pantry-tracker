@@ -73,7 +73,7 @@ const GroceryList = () => {
         <hr className="mb-4" />
         <button
           onClick={handleOpen}
-          className="bg-gradient-to-r from-blue-200 to-blue-300 text-black py-2 px-4 rounded hover:from-blue-300 hover:to-blue-400 w-full "
+          className="bg-gradient-to-r from-blue-200 to-blue-300 text-black py-2 px-4 rounded hover:from-blue-300 hover:to-blue-400 w-full"
         >
           Add Grocery
         </button>
@@ -111,7 +111,7 @@ const GroceryList = () => {
                 <td className="px-4 py-2 text-gray-900 flex justify-end items-center">
                   <button
                     onClick={() => removeItem(item.id)}
-                    className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700"
+                    className="bg-gradient-to-r from-red-500 to-red-600 text-white py-2 px-4 rounded hover:from-red-700 hover:to-red-800"
                   >
                     Delete
                   </button>
@@ -160,12 +160,13 @@ const GroceryList = () => {
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
               />
-              <Button
+              <button
                 variant="contained"
                 onClick={addItem}
+                className="bg-gradient-to-r from-blue-200 to-blue-300 text-black py-2 px-4 rounded hover:from-blue-300 hover:to-blue-400 w-full"
               >
                 Add
-              </Button>
+              </button>
             </Stack>
           </Box>
         </Modal>

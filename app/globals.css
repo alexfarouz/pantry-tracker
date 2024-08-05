@@ -7,3 +7,10 @@
   padding: 0;
   margin: 0;
 }
+
+@media (max-width: 640px) {
+  .mobile-padding {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+}

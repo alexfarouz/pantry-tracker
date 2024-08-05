@@ -16,21 +16,8 @@ const Sidebar = ({ isOpen, toggleSidebar, handleOpen, handleOpenCamera }) => {
         <li className="mb-2 hover:text-blue-200"><Link href="/grocery-list">Grocery List</Link></li>
         <li className="mb-2 hover:text-blue-200"><Link href="/recipe-suggestions">Recipes</Link></li>
       </ul>
-      <button
-        className="bg-gradient-to-r from-blue-200 to-blue-400 text-white py-2 px-4 rounded mt-4 hover:from-blue-400 hover:to-blue-600 flex items-center justify-center space-x-2"
-        onClick={handleOpen}
-      >
-        <PlusCircleIcon className="w-6 h-6" />
-        <span>Add New Item</span>
-      </button>
-      <button
-        className="bg-gradient-to-r from-gray-500 to-gray-600 text-white py-2 px-4 rounded mt-4 hover:from-gray-600 hover:to-gray-700 flex items-center justify-center space-x-2"
-        onClick={handleOpenCamera}
-      >
-        <CameraIcon className="w-6 h-6" />
-        <span>Capture Item</span>
-      </button>
-      <div className="bg-slate-800 p-4 mt-auto w-48 flex items-center rounded-md cursor-pointer" onClick={() => document.querySelector('#clerk-button').click()}>
+      
+      <div className="bg-slate-800 p-4 mt-auto w-48 flex items-center rounded-md cursor-pointer">
         <UserButton />
         <span className="ml-3">Manage Account</span>
       </div>

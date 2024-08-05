@@ -20,12 +20,14 @@ export default function Home() {
   const [isWideScreen, setIsWideScreen] = useState(true);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingInventory, setLoadingInventory] = useState(true); // New state for loading inventory
   const signInPopupRef = useRef(null);
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   const updateInventory = async () => {
     if (!user) return;
+    //setLoadingInventory(true); // Set loading to true before fetching
     const snapshot = await getDocs(collection(firestore, `users/${user.id}/pantry`));
     const inventoryList = [];
     snapshot.forEach((doc) => {
@@ -36,6 +38,7 @@ export default function Home() {
     });
     setInventory(inventoryList);
     applySearch(inventoryList, searchTerm);
+    setLoadingInventory(false); // Set loading to false after fetching
   };
 
   const addItem = async (item) => {
@@ -196,10 +199,16 @@ export default function Home() {
             <div className="fixed top-0 -z-10 h-full w-full">
               <div className="absolute top-0 z-[-2] h-screen w-screen bg-white bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]"></div>
             </div>
-            <div className="flex flex-col items-center h-screen pt-20">
+            <div className="flex flex-col items-center h-screen pt-20 mobile-padding">
               <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} handleOpen={handleOpen} handleOpenCamera={handleOpenCamera} />
               <div className={`flex-1 p-6 transition-all duration-300 ${isSidebarOpen && isWideScreen ? 'ml-64' : 'ml-0'}`}>
-                {filteredInventory.length === 0 ? (
+                {loadingInventory ? (
+                  <div className="flex flex-col items-center justify-center h-full">
+                    <Typography variant="h4" gutterBottom>
+                      Loading your pantry...
+                    </Typography>
+                  </div>
+                ) : filteredInventory.length === 0 ? (
                   <div className="flex flex-col items-center justify-center h-full">
                     <Typography variant="h4" gutterBottom>
                       Your pantry is empty. Add items for AI generated recipes.
