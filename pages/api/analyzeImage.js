@@ -2,6 +2,7 @@ import { OpenAI } from 'openai';
 import { storage, firestore } from '../../firebase';
 import { ref, deleteObject, getDownloadURL } from 'firebase/storage';
 import { doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
+import { getAuth } from '@clerk/nextjs/server';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -52,6 +53,12 @@ export default async function handler(req, res) {
 
   const { imageUrl } = req.body;
 
+  // Get the authenticated user
+  const { userId } = getAuth(req);
+  if (!userId) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
   try {
     const itemDescription = await handleOpenAIRequest(imageUrl);
     console.log(itemDescription);
@@ -65,8 +72,8 @@ export default async function handler(req, res) {
     const item = match[1];
     const quantity = parseInt(match[2], 10);
 
-    // Update Firestore with the item and quantity
-    const docRef = doc(firestore, 'pantry', item.toLowerCase());
+    // Update Firestore with the item and quantity for the authenticated user
+    const docRef = doc(firestore, `users/${userId}/pantry`, item.toLowerCase());
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
@@ -75,11 +82,12 @@ export default async function handler(req, res) {
       await setDoc(docRef, { quantity });
     }
 
-    // Check if the uploaded image exists before attempting to delete it
+    // Delete the image from Firebase Storage
     const imageRef = ref(storage, decodeURIComponent(imageUrl.split('/').pop().split('?')[0]));
     try {
-      await getDownloadURL(imageRef);
+      await getDownloadURL(imageRef); // Check if the image exists
       await deleteObject(imageRef);
+      console.log('Image deleted successfully');
     } catch (error) {
       console.warn('Image not found in storage, skipping delete operation.');
     }

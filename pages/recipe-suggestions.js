@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import RecipeSuggestions from '../app/components/RecipeSuggestions';
 import '../app/globals.css'
+import { UserButton } from '@clerk/nextjs';
 
 export default function RecipeSuggestionsPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);

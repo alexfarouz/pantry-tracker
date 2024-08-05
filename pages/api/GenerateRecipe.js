@@ -1,15 +1,17 @@
 import { OpenAI } from 'openai';
 import { firestore } from '../../firebase';
 import { collection, getDocs } from 'firebase/firestore';
+import { getAuth } from '@clerk/nextjs/server';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-export default async function handler(req, res) {
+async function generateRecipe(req, res) {
+  const { userId } = getAuth(req);
   try {
     // Fetch ingredients from Firestore
-    const snapshot = await getDocs(collection(firestore, 'pantry'));
+    const snapshot = await getDocs(collection(firestore, `users/${userId}/pantry`));
     const ingredients = [];
     snapshot.forEach(doc => {
       ingredients.push(doc.id);
@@ -82,11 +84,10 @@ export default async function handler(req, res) {
       max_tokens: 1000,
     });
 
-    // Handle the response
     if (response && response.choices && response.choices.length > 0) {
       const recipe = response.choices[0].message.content;
       console.log('Generated Recipe:', recipe);
-      res.status(200).send(recipe); // Return the recipe in the response
+      res.status(200).send(recipe);
     } else {
       res.status(500).send('Failed to generate a recipe.');
     }
@@ -94,4 +95,6 @@ export default async function handler(req, res) {
     console.error('Error generating recipe:', error);
     res.status(500).send('Error generating recipe.');
   }
-}
+};
+
+export default generateRecipe;

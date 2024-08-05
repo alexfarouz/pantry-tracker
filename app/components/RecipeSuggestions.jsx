@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Sidebar from './Sidebar';
+import { UserButton } from '@clerk/nextjs';
 
 const RecipeSuggestions = ({ handleOpen, handleOpenCamera }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -106,7 +107,10 @@ const RecipeSuggestions = ({ handleOpen, handleOpenCamera }) => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"></path>
               </svg>
             </button>
-            <h1 className="text-3xl font-bold">Pantry Tracker</h1>
+            <h1 className="text-3xl font-bold hidden sm:block">Pantry Tracker</h1>
+          </div>
+          <div className="ml-auto">
+            <UserButton />
           </div>
         </div>
       </div>
@@ -117,29 +121,29 @@ const RecipeSuggestions = ({ handleOpen, handleOpenCamera }) => {
         <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} handleOpen={handleOpen} handleOpenCamera={handleOpenCamera} />
         <div className={`flex-1 p-6 transition-all duration-300 ${isSidebarOpen && isWideScreen ? 'ml-64' : 'ml-0'}`}>
           <div className="w-full flex flex-col items-center gap-2">
-            <div className="w-full sm:w-[480px] md:w-[640px] lg:w-[800px] xl:w-[1050px] bg-white rounded-lg shadow-lg p-8 mx-auto">
+            <div className="w-full sm:w-[430px] md:w-[640px] lg:w-[800px] xl:w-[1050px] bg-white rounded-lg shadow-lg p-8 mx-auto">
               <h1 className="text-2xl font-bold text-gray-700 text-center">Recipe Suggestions</h1>
               <hr className="my-4" />
               <div className="text-gray-500">
                 {parsedRecipe ? (
                   <div>
                     <h2 className="text-3xl font-bold text-center">{parsedRecipe.title}</h2>
-                    <div className="flex justify-center my-4 space-x-4">
+                    <div className="flex justify-center my-4 flex-wrap gap-2">
                       <div className="flex items-center bg-gray-200 px-3 py-1 rounded">
-                        <span className="ml-2">{parsedRecipe.difficulty}</span>
+                        <span>{parsedRecipe.difficulty}</span>
                       </div>
                       <div className="flex items-center bg-gray-200 px-3 py-1 rounded">
                         <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3"></path>
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 2a10 10 0 100 20 10 10 0 000-20z"></path>
                         </svg>
-                        <span className="ml-2">Time: {parsedRecipe.time}</span>
+                        <span className="ml-1">Time: {parsedRecipe.time}</span>
                       </div>
                       <div className="flex items-center bg-gray-200 px-3 py-1 rounded">
                         <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5c-1.93 0-3.68.74-5 2m10 0c-1.32-1.26-3.07-2-5-2m-1 10v-4h2v4m-6 0v-4h2v4m-8 0V7h18v10H2z"></path>
                         </svg>
-                        <span className="ml-2">Servings: {parsedRecipe.servings}</span>
+                        <span className="ml-1">Servings: {parsedRecipe.servings}</span>
                       </div>
                     </div>
                     <hr className="my-4" />
@@ -170,7 +174,7 @@ const RecipeSuggestions = ({ handleOpen, handleOpenCamera }) => {
                   </div>
                 )}
               </div>
-              <button onClick={generateRecipe} className="bg-gradient-to-r from-blue-300 to-blue-500 
+              <button onClick={generateRecipe} className="bg-gradient-to-r from-blue-200 to-blue-400 
                 hover:from-blue-400 hover:to-blue-600 text-white px-4 py-2 rounded mt-4">
                 Generate Recipe
               </button>
