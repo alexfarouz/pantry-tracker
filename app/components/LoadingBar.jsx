@@ -23,7 +23,7 @@ const LoadingBar = ({ duration }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-blue-200 z-50">
       <div className="w-1/2">
-        <div className="text-center mb-2 text-5xl font-semibold text-gray-700">Pantry Tracker</div>
+        <div className="text-center mb-3 text-5xl font-semibold text-gray-700">Pantry Tracker</div>
         <div className="h-2 bg-gray-200">
           <div className="w-3/4 h-full bg-blue-400" style={{ width: `${progress}%` }}></div>
         </div>

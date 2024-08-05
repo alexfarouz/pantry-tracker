@@ -199,64 +199,88 @@ export default function Home() {
             <div className="flex flex-col items-center h-screen pt-20">
               <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} handleOpen={handleOpen} handleOpenCamera={handleOpenCamera} />
               <div className={`flex-1 p-6 transition-all duration-300 ${isSidebarOpen && isWideScreen ? 'ml-64' : 'ml-0'}`}>
-                <Box width="100vw"
-                  display="flex"
-                  flexDirection="column"
-                  alignItems="center"
-                  gap={2}
-                >
-                  <Modal open={open} onClose={handleClose}>
-                    <Box position="absolute"
-                      top="50%"
-                      left="50%"
-                      width={400}
-                      bgcolor="white"
-                      border="2px solid #000"
-                      boxShadow={24}
-                      p={4}
-                      display="flex"
-                      flexDirection="column"
-                      gap={3}
-                      sx={{
-                        transform: 'translate(-50%,-50%)'
-                      }}
-                    >
-                      <Typography variant="h6">Add Item</Typography>
-                      <Stack width="100%" direction="row" spacing={2}>
-                        <TextField variant='outlined'
-                          fullWidth
-                          value={itemName}
-                          onChange={(e) => {
-                            setItemName(e.target.value)
-                          }}
-                        />
-                        <Button variant="outlined"
-                          onClick={() => {
-                            addItem(itemName);
-                            setItemName('');
-                            handleClose();
-                          }}
-                        >Add</Button>
-                      </Stack>
-                    </Box>
-                  </Modal>
+                {filteredInventory.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center h-full">
+                    <Typography variant="h4" gutterBottom>
+                      Your pantry is empty. Add items for AI generated recipes.
+                    </Typography>
+                    <div className="flex space-x-4">
+                      <button
+                        className="bg-gradient-to-r from-gray-500 to-gray-700 text-white mt-4 py-2 px-4 rounded hover:from-gray-600 
+                        hover:to-gray-800 flex items-center justify-center whitespace-nowrap"
+                        onClick={handleOpen}
+                      >
+                        <span>Add New Item</span>
+                        <svg className="w-6 h-6 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                      </button>
+                      <button
+                        className="bg-gradient-to-r from-gray-500 to-gray-700 text-white mt-4 py-2 px-4 rounded hover:from-gray-600 
+                        hover:to-gray-800 flex items-center justify-center whitespace-nowrap"
+                        onClick={handleOpenCamera}
+                      >
+                        <span>Capture Item</span>
+                        <svg className="w-6 h-6 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 7h2m0 0h16M5 7l1-2h12l1 2m-14 0v12m0 0h16V7m-16 0h16M4 14h.01M4 10h.01M4 18h.01M20 14h.01M20 10h.01M20 18h.01M8 14h8v2H8zm0-4h8v2H8z"></path>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <Box width="100vw" display="flex" flexDirection="column" alignItems="center" gap={2}>
+                    <InventoryList inventory={filteredInventory} addItem={addItem} removeItem={removeItem} deleteItem={deleteItem} />
+                  </Box>
+                )}
+                <Modal open={open} onClose={handleClose}>
+                  <Box position="absolute"
+                    top="50%"
+                    left="50%"
+                    width={400}
+                    bgcolor="white"
+                    border="2px solid #000"
+                    boxShadow={24}
+                    p={4}
+                    display="flex"
+                    flexDirection="column"
+                    gap={3}
+                    sx={{
+                      transform: 'translate(-50%,-50%)'
+                    }}
+                  >
+                    <Typography variant="h6">Add Item</Typography>
+                    <Stack width="100%" direction="row" spacing={2}>
+                      <TextField variant='outlined'
+                        fullWidth
+                        value={itemName}
+                        onChange={(e) => {
+                          setItemName(e.target.value)
+                        }}
+                      />
+                      <Button variant="outlined"
+                        onClick={() => {
+                          addItem(itemName);
+                          setItemName('');
+                          handleClose();
+                        }}
+                      >Add</Button>
+                    </Stack>
+                  </Box>
+                </Modal>
 
-                  <Modal open={isCameraOpen} onClose={handleCloseCamera}>
-                    <Box className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-                      <Box className="w-full h-full bg-white p-4 relative">
-                        <CameraCapture onCapture={handleCapture} onClose={handleCloseCamera} />
-                        <button
-                          className="absolute top-4 right-4 bg-gray-700 text-white py-2 px-4 rounded hover:bg-gray-800"
-                          onClick={handleCloseCamera}
-                        >
-                          Close
-                        </button>
-                      </Box>
+                <Modal open={isCameraOpen} onClose={handleCloseCamera}>
+                  <Box className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+                    <Box className="w-full h-full bg-white p-4 relative">
+                      <CameraCapture onCapture={handleCapture} onClose={handleCloseCamera} />
+                      <button
+                        className="absolute top-4 right-4 bg-gray-700 text-white py-2 px-4 rounded hover:bg-gray-800"
+                        onClick={handleCloseCamera}
+                      >
+                        Close
+                      </button>
                     </Box>
-                  </Modal>
-
-                  <InventoryList inventory={filteredInventory} addItem={addItem} removeItem={removeItem} deleteItem={deleteItem} />
-                </Box>
+                  </Box>
+                </Modal>
               </div>
             </div>
           </>
